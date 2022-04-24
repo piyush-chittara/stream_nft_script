@@ -1,5 +1,5 @@
 {
-  "name": "escrow-scripts",
+  "name": "stream-nft",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,6 +9,9 @@
     "setup": "npm run compile && node build/setup.js",
     "setup-alice": "npm run compile && node build/setup.js && node build/alice.js",
     "alice": "npm run compile && node build/alice.js",
+    "alicepda": "npm run compile && node build/alicepda.js",
+    "withdraw": "npm run compile && node build/withdraw.js",
+    "cancel": "npm run compile && node build/cancel.js",
     "bob": "npm run compile && node build/bob.js",
     "alice-bob": "npm run compile && node build/alice.js && node build/bob.js",
     "all": "npm run compile && node build/setup.js && node build/alice.js && node build/bob.js"

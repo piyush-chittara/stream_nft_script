@@ -1,4 +1,3 @@
-import { TOKEN_PROGRAM_ID, Token } from "@solana/spl-token";
 import {
   Connection,
   PublicKey,
@@ -49,13 +48,17 @@ const bob = async () => {
     initializerRentRecieveAccount: new PublicKey(
       decodedEscrowLayout.initializerReceivingTokenAccountPubkey
     ),
-    expectedAmount: new BN(decodedEscrowLayout.rate, 10, "le"),
+    tokenPubkey: new PublicKey(decodedEscrowLayout.tokenPubkey),
+    rate: new BN(decodedEscrowLayout.rate, 10, "le"),
+    expiry: new BN(decodedEscrowLayout.expiry, 10, "le"),
+    rentee: new PublicKey(decodedEscrowLayout.rentee),
+    state: new BN(decodedEscrowLayout.state),
   };
 
-  const xToken = new Token(connection, xMint, TOKEN_PROGRAM_ID, bobKeypair);
-  const associatedDestinationTokenAddr = await (
-    await xToken.getOrCreateAssociatedAccountInfo(destPubKey)
-  ).address;
+  // const xToken = new Token(connection, xMint, TOKEN_PROGRAM_ID, bobKeypair);
+  // const associatedDestinationTokenAddr = await (
+  //   await xToken.getOrCreateAssociatedAccountInfo(destPubKey)
+  // ).address;
   // const associatedDestinationTokenAddr = await Token.getAssociatedTokenAddress(
   //   xToken.associatedProgramId,
   //   xToken.programId,
@@ -90,7 +93,7 @@ const bob = async () => {
     escrowState.initializerAccountPubkey.toBase58()
   );
   const PDA = await PublicKey.findProgramAddress(
-    [Buffer.from("stream")],
+    [xMint.toBuffer()],
     escrowProgramId
   );
   console.log("PDA is: {}", PDA[0].toBase58());
@@ -106,7 +109,7 @@ const bob = async () => {
     keys: [
       { pubkey: bobKeypair.publicKey, isSigner: true, isWritable: false },
       {
-        pubkey: associatedDestinationTokenAddr,
+        pubkey: destPubKey,
         isSigner: false,
         isWritable: true,
       },
@@ -125,9 +128,7 @@ const bob = async () => {
         isSigner: false,
         isWritable: true,
       },
-      { pubkey: escrowStateAccountPubkey, isSigner: false, isWritable: true },
-      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
-      { pubkey: PDA[0], isSigner: false, isWritable: false },
+      { pubkey: escrowStateAccountPubkey, isSigner: false, isWritable: true }, //PDA with data
       {
         pubkey: new PublicKey("11111111111111111111111111111111"),
         isSigner: false,
@@ -153,50 +154,7 @@ const bob = async () => {
   // sleep to allow time to update
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  if ((await connection.getAccountInfo(escrowStateAccountPubkey)) !== null) {
-    logError("Escrow account has not been closed");
-    process.exit(1);
-  }
-
-  if (
-    (await connection.getAccountInfo(escrowState.XTokenTempAccountPubkey)) !==
-    null
-  ) {
-    logError("Temporary X token account has not been closed");
-    process.exit(1);
-  }
-
-  // const newAliceYbalance = await getTokenBalance(
-  //   aliceYTokenAccountPubkey,
-  //   connection
-  // );
-
-  // if (newAliceYbalance !== aliceYbalance + terms.aliceExpectedAmount) {
-  //   logError(
-  //     `Alice's Y balance should be ${
-  //       aliceYbalance + terms.aliceExpectedAmount
-  //     } but is ${newAliceYbalance}`
-  //   );
-  //   process.exit(1);
-  // }
-
-  // const newBobXbalance = await getTokenBalance(
-  //   bobXTokenAccountPubkey,
-  //   connection
-  // );
-
-  // if (newBobXbalance !== bobXbalance + terms.bobExpectedAmount) {
-  //   logError(
-  //     `Bob's X balance should be ${
-  //       bobXbalance + terms.bobExpectedAmount
-  //     } but is ${newBobXbalance}`
-  //   );
-  //   process.exit(1);
-  // }
-
-  console.log(
-    "✨Trade successfully executed. All temporary accounts closed✨\n"
-  );
+  console.log("✨Rent paid and rentee added✨\n");
   // console.table([
   //   {
   //     "Alice Token Account X": await getTokenBalance(
