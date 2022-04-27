@@ -15,14 +15,12 @@ import {
   getKeypair,
   getProgramId,
   getPublicKey,
-  getTerms,
   logError,
   writePublicKey,
 } from "./utils";
 
 const alice = async () => {
   const escrowProgramId = getProgramId();
-  const terms = getTerms();
 
   const aliceXTokenAccountPubkey = getPublicKey("alice_x");
   // const aliceYTokenAccountPubkey = getPublicKey("alice_y");
@@ -170,9 +168,6 @@ const alice = async () => {
     );
     process.exit(1);
   }
-  console.log(
-    `✨Escrow successfully initialized. Alice is offering ${terms.bobExpectedAmount}X for ${terms.aliceExpectedAmount}Y✨\n`
-  );
   writePublicKey(pda, "escrow");
   // console.table([
   //   {

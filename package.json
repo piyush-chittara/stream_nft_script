@@ -12,6 +12,7 @@
     "alicepda": "npm run compile && node build/alicepda.js",
     "withdraw": "npm run compile && node build/withdraw.js",
     "cancel": "npm run compile && node build/cancel.js",
+    "query": "npm run compile && node build/query.js",
     "bob": "npm run compile && node build/bob.js",
     "alice-bob": "npm run compile && node build/alice.js && node build/bob.js",
     "all": "npm run compile && node build/setup.js && node build/alice.js && node build/bob.js"
