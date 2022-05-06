@@ -29,7 +29,7 @@ const alice = async () => {
 
   const tempXTokenAccountKeypair = new Keypair();
   const connection = new Connection(
-    "https://api.testnet.solana.com",
+    "https://api.devnet.solana.com",
     "confirmed"
   );
   // Empty account to hold NFT
@@ -72,15 +72,15 @@ const alice = async () => {
   //   ),
   // });
   // const escrowKeypair = new Keypair();
-  const createEscrowAccountIx = SystemProgram.createAccount({
-    space: ESCROW_ACCOUNT_DATA_LAYOUT.span,
-    lamports: await connection.getMinimumBalanceForRentExemption(
-      ESCROW_ACCOUNT_DATA_LAYOUT.span
-    ),
-    fromPubkey: aliceKeypair.publicKey,
-    newAccountPubkey: pda,
-    programId: escrowProgramId,
-  });
+  // const createEscrowAccountIx = SystemProgram.createAccount({
+  //   space: ESCROW_ACCOUNT_DATA_LAYOUT.span,
+  //   lamports: await connection.getMinimumBalanceForRentExemption(
+  //     ESCROW_ACCOUNT_DATA_LAYOUT.span
+  //   ),
+  //   fromPubkey: aliceKeypair.publicKey,
+  //   newAccountPubkey: pda,
+  //   programId: escrowProgramId,
+  // });
   console.log("Step4");
   const initEscrowIx = new TransactionInstruction({
     programId: escrowProgramId,
@@ -105,7 +105,14 @@ const alice = async () => {
         isWritable: false,
       },
     ],
-    data: Buffer.from(Uint8Array.of(0, ...new BN(1).toArray("le", 8))),
+    data: Buffer.from(
+      Uint8Array.of(
+        0,
+        ...new BN(1).toArray("le", 8),
+        ...new BN(1).toArray("le", 8),
+        ...new BN(2).toArray("le", 8)
+      )
+    ),
   });
   console.log("Step5");
   const tx = new Transaction().add(

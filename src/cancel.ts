@@ -20,7 +20,7 @@ const bob = async () => {
   const canceler = getKeypair("alice");
   const escrowProgramId = getProgramId();
   const connection = new Connection(
-    "https://api.testnet.solana.com",
+    "https://api.devnet.solana.com",
     "confirmed"
   );
   const escrowAccount = await connection.getAccountInfo(

@@ -14,7 +14,7 @@ const bob = async () => {
   const xMint = getPublicKey("mint_x");
   const escrowProgramId = getProgramId();
   const connection = new Connection(
-    "https://api.testnet.solana.com",
+    "https://api.devnet.solana.com",
     "confirmed"
   );
   
@@ -51,6 +51,8 @@ const bob = async () => {
     expiry: new BN(decodedEscrowLayout.expiry, 10, "le"),
     rentee: new PublicKey(decodedEscrowLayout.rentee).toBase58(),
     state: new BN(decodedEscrowLayout.state),
+    min_duration: new BN(decodedEscrowLayout.min_duration, 10, "le"),
+    max_duration: new BN(decodedEscrowLayout.max_duration, 10, "le"),
   };
   console.log("pda: ", escrowState);
 };
