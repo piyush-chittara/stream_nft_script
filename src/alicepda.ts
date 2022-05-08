@@ -110,7 +110,7 @@ const alice = async () => {
         0,
         ...new BN(1).toArray("le", 8),
         ...new BN(1).toArray("le", 8),
-        ...new BN(2).toArray("le", 8)
+        ...new BN(1).toArray("le", 8)
       )
     ),
   });
