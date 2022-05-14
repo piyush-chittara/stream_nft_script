@@ -21,9 +21,10 @@ const bob = async () => {
   const xMint = getPublicKey("mint_x");
   const escrowProgramId = getProgramId();
   const connection = new Connection(
-    "https://api.testnet.solana.com",
+    "https://api.devnet.solana.com",
     "confirmed"
   );
+
   const escrowAccount = await connection.getAccountInfo(
     escrowStateAccountPubkey
   );

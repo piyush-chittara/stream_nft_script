@@ -14,6 +14,9 @@
     "cancel": "npm run compile && node build/cancel.js",
     "query": "npm run compile && node build/query.js",
     "bob": "npm run compile && node build/bob.js",
+    "rented": "npm run compile && node build/rented.js",
+    "available": "npm run compile && node build/available.js",
+    "allNFT": "npm run compile && node build/allNFT.js",
     "alice-bob": "npm run compile && node build/alice.js && node build/bob.js",
     "all": "npm run compile && node build/setup.js && node build/alice.js && node build/bob.js"
   },
@@ -31,6 +34,7 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
+    "@metaplex/js": "^4.12.0",
     "@solana/spl-token": "^0.1.8",
     "@solana/web3.js": "^1.29.1",
     "bn.js": "^5.2.0"

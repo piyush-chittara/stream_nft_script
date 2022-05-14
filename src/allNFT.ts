@@ -10,8 +10,6 @@ import {
 } from "./utils";
 
 const bob = async () => {
-
-
   const escrowProgramId = getProgramId();
   const connection = new Connection(
     "https://api.devnet.solana.com",

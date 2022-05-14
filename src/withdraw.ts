@@ -1,3 +1,5 @@
+import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+
 import {
   Connection,
   PublicKey,
@@ -18,7 +20,7 @@ const bob = async () => {
   const withdrawer = getKeypair("bob");
   const escrowProgramId = getProgramId();
   const connection = new Connection(
-    "https://api.testnet.solana.com",
+    "https://api.devnet.solana.com",
     "confirmed"
   );
   const escrowAccount = await connection.getAccountInfo(
@@ -39,18 +41,46 @@ const bob = async () => {
     XTokenTempAccountPubkey: new PublicKey(
       decodedEscrowLayout.initializerTempTokenAccountPubkey
     ),
+    owner: new PublicKey(decodedEscrowLayout.initializerPubkey),
+    borrower: new PublicKey(decodedEscrowLayout.rentee),
+    mint: new PublicKey(decodedEscrowLayout.tokenPubkey),
   };
+  const xToken = new Token(
+    connection,
+    new PublicKey("8dv9xBuvv7czsX32tnkafSfi9d7Bh5y4Ly5stdGjEg5Z"),
+    TOKEN_PROGRAM_ID,
+    withdrawer
+  );
+  const associatedOwnerTokenAddress = await (
+    await xToken.getOrCreateAssociatedAccountInfo(escrowState.owner)
+  ).address;
+  const associatedBorrowerTokenAddress = await (
+    await xToken.getOrCreateAssociatedAccountInfo(escrowState.borrower)
+  ).address;
+  const accountList = [
+    {
+      pubkey: escrowState.XTokenTempAccountPubkey,
+      isSigner: false,
+      isWritable: false,
+    },
+    { pubkey: escrowStateAccountPubkey, isSigner: false, isWritable: true }, //PDA with data
+    { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+    { pubkey: associatedOwnerTokenAddress, isSigner: false, isWritable: true },
+    {
+      pubkey: associatedBorrowerTokenAddress,
+      isSigner: false,
+      isWritable: true,
+    }
+  ];
+  accountList.push({
+    pubkey: new PublicKey("6Nojx8PpkWPiBKtzssZCobWujYfemdCFKBfs2WLeCBBK"),
+    isSigner: false,
+    isWritable: true,
+  });
   const withdrawIx = new TransactionInstruction({
     programId: escrowProgramId,
     data: Buffer.from(Uint8Array.of(2)),
-    keys: [
-      {
-        pubkey: escrowState.XTokenTempAccountPubkey,
-        isSigner: false,
-        isWritable: false,
-      },
-      { pubkey: escrowStateAccountPubkey, isSigner: false, isWritable: true }, //PDA with data
-    ],
+    keys: accountList,
   });
 
   console.log("Sending Withdraw's transaction...");

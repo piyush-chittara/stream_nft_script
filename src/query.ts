@@ -53,6 +53,7 @@ const bob = async () => {
     state: new BN(decodedEscrowLayout.state),
     min_duration: new BN(decodedEscrowLayout.min_duration, 10, "le"),
     max_duration: new BN(decodedEscrowLayout.max_duration, 10, "le"),
+    owner_share: new BN(decodedEscrowLayout.owner_revenue, 10, "le"),
   };
   console.log("pda: ", escrowState);
 };

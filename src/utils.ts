@@ -81,6 +81,7 @@ export const ESCROW_ACCOUNT_DATA_LAYOUT = BufferLayout.struct([
   BufferLayout.u8("state"),
   uint64("min_duration"),
   uint64("max_duration"),
+  uint64("owner_revenue"),
 ]);
 
 export interface EscrowLayout {
@@ -95,4 +96,5 @@ export interface EscrowLayout {
   state: number;
   min_duration: Uint8Array;
   max_duration: Uint8Array;
+  owner_revenue: Uint8Array;
 }
