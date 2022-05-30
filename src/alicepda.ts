@@ -171,7 +171,7 @@ const alice = async () => {
   });
 
   console.log("Step5");
-  //  Creating the transaction
+  // * Creating the transaction
   const tx = new Transaction().add(
     createTempTokenAccountIx,
     initTempAccountIx,
@@ -181,12 +181,12 @@ const alice = async () => {
   );
 
   console.log("Sending Alice's transaction...");
-  //  Sending the Transaction 
+  // * Sending the Transaction 
   await connection.sendTransaction(
     tx,
     [aliceKeypair, tempXTokenAccountKeypair],
     { skipPreflight: false, preflightCommitment: "confirmed" }
-  );
+  ); //todo Make sure everything is there before sending
 
   console.log("Step6");
   // sleep to allow time to update

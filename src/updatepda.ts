@@ -34,7 +34,7 @@ const alice = async () => {
   // const aliceYTokenAccountPubkey = getPublicKey("alice_y");
   const XTokenMintPubkey = getPublicKey("mint_x");
   const aliceKeypair = getKeypair("alice");
-  //const tempXTokenAccountKeypair = new Keypair(); //? We don't need this 
+  const tempXTokenAccountKeypair = getKeypair(""); //? Its already transfered to PDA 
   const connection = new Connection(
     "https://api.devnet.solana.com",
     "confirmed"
@@ -50,7 +50,7 @@ const alice = async () => {
     keys: [
       { pubkey: aliceKeypair.publicKey, isSigner: true, isWritable: false },
       {
-        pubkey: tempXTokenAccountKeypair.publicKey,
+        pubkey: tempXTokenAccountKeypair.publicKey, //? Need to get from file
         isSigner: false,
         isWritable: true,
       },
