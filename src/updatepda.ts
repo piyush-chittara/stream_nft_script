@@ -71,9 +71,9 @@ const alice = async () => {
     data: Buffer.from(
       Uint8Array.of(
         4, // Change the tag of instruction to 4
-        ...new BN(1).toArray("le", 8),
-        ...new BN(1).toArray("le", 8),
-        ...new BN(1).toArray("le", 8)
+        ...new BN(2).toArray("le", 8),
+        ...new BN(5).toArray("le", 8),
+        ...new BN(5).toArray("le", 8)
       )
     ),
   });
